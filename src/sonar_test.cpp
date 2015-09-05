@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "sonar_test");
   ros::NodeHandle n;
-  ros::Publisher chatter_pub = n.advertise<sonar::Sonar>("sonar_data", 1000);
+  ros::Publisher chatter_pub = n.advertise<sonar::Sonar>("sonar_data_raw", 1000);
   ros::Rate loop_rate(10);
   float distance0 = 0;
   
