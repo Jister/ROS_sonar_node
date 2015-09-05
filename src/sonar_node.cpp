@@ -109,10 +109,6 @@ void Interrupt6()
   }
 }
 
-void Filter(float sonar)
-{
-}
-  
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "sonar_node");
@@ -122,6 +118,9 @@ int main(int argc, char **argv)
   float distance1 = 0;
   float distance2 = 0;   
   float distance3 = 0;   
+  float distance4 = 0;   
+  float distance5 = 0;   
+  float distance6 = 0;   
   wiringPiSetup();
   pinMode(21, OUTPUT);
   pinMode(22, OUTPUT);
