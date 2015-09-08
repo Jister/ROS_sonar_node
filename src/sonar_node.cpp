@@ -25,6 +25,11 @@ int sonar6_start_time;
 int sonar6_stop_time;
 int sonar6_time;
 
+sonar::Sonar sonar_raw
+sonar::Sonar sonar_prev;
+sonar::Sonar sonar_pprev;
+sonar::Sonar sonar_flitered;
+
 void Interrupt1()
 {
   if(digitalRead(0) == 1)
@@ -113,7 +118,7 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "sonar_node");
   ros::NodeHandle n;
-  ros::Publisher chatter_pub = n.advertise<sonar::Sonar>("sonar_data_raw", 1000);
+  ros::Publisher chatter_pub = n.advertise<sonar::Sonar>("sonar_data", 1000);
   ros::Rate loop_rate(10);
   float distance1 = 0;
   float distance2 = 0;   
@@ -144,8 +149,6 @@ int main(int argc, char **argv)
 
   while (ros::ok())
   {
-    sonar::Sonar msg;
-    
     if(sonar1_stop_time > sonar1_start_time)
     {
       sonar1_time = sonar1_stop_time - sonar1_start_time;
@@ -177,21 +180,23 @@ int main(int argc, char **argv)
     distance5 = sonar5_time/58;
     distance6 = sonar6_time/58;
  
-    msg.sonar_1 = distance1;
-    msg.sonar_2 = distance2;
-    msg.sonar_3 = distance3;
-    msg.sonar_4 = distance4;
-    msg.sonar_5 = distance5;
-    msg.sonar_6 = distance6;
+   sonar_pprev = sonar_prev;
+   sonar_prev = sonar_raw;
+    sonar_raw.sonar_1 = distance1;
+    sonar_raw.sonar_2 = distance2;
+    sonar_raw.sonar_3 = distance3;
+    sonar_raw.sonar_4 = distance4;
+    sonar_raw.sonar_5 = distance5;
+    sonar_raw.sonar_6 = distance6;
 
-    ROS_INFO("%f", distance1);
-    ROS_INFO("%f", distance2);
-    ROS_INFO("%f", distance3);
-    ROS_INFO("%f", distance4);
-    ROS_INFO("%f", distance5);
-    ROS_INFO("%f", distance6);
-  
-    chatter_pub.publish(msg);
+    sonar_filtered.sonar_1 = (sonar_raw.sonar_1 + sonar_prev.sonar_1 + sonar_pprev.sonar_1)/3;
+    sonar_filtered.sonar_2 = (sonar_raw.sonar_2 + sonar_prev.sonar_2 + sonar_pprev.sonar_2)/3;
+    sonar_filtered.sonar_3 = (sonar_raw.sonar_3 + sonar_prev.sonar_3 + sonar_pprev.sonar_3)/3;
+    sonar_filtered.sonar_4 = (sonar_raw.sonar_4 + sonar_prev.sonar_4 + sonar_pprev.sonar_4)/3;
+    sonar_filtered.sonar_5 = (sonar_raw.sonar_5 + sonar_prev.sonar_5 + sonar_pprev.sonar_5)/3;
+    sonar_filtered.sonar_6 = (sonar_raw.sonar_6 + sonar_prev.sonar_6 + sonar_pprev.sonar_6)/3;
+
+    chatter_pub.publish(sonar_filtered);
   
     ros:: spinOnce();
     loop_rate.sleep();
