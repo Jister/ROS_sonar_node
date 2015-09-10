@@ -11,7 +11,7 @@ int Front = 0;
 int Back = 0;
 int Left = 0;
 int Right = 0;
-char send_buf[10]
+char send_buf[10];
 
 void sonarCallback(const sonar::Sonar sonar)
 {
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 
   while(ros::ok())
   {
-    sprintf(send_buf,"MF%dB%dL%dR%d\n" , Front , Back , Left , Right);
+    sprintf(send_buf,"SF%dB%dL%dR%d\n" , Front , Back , Left , Right);
     serialPuts(fd,send_buf);
     ros::spinOnce();
   }
