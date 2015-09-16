@@ -129,7 +129,6 @@ target_link_libraries(sonar_test
 target_link_libraries(sonar_handle
   ${catkin_LIBRARIES}
   wiringPi
-  wiringSerial
 )
 #############
 ## Install ##
