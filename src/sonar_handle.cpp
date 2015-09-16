@@ -11,7 +11,9 @@ int Front = 0;
 int Back = 0;
 int Left = 0;
 int Right = 0;
-char send_buf[10]
+int angle = 0;
+int min_distance = 0;
+char send_buf[10];
 
 void sonarCallback(const sonar::Sonar sonar)
 {
@@ -46,6 +48,9 @@ void sonarCallback(const sonar::Sonar sonar)
   }else{
     Back = 0;
   }
+
+    sprintf(send_buf,"M%03d%05dF%dB%dL%dR%d\n" ,angle , min_distance, Front , Back , Left , Right);
+    serialPuts(fd,send_buf);
 }
 
 int main(int argc, char **argv)
@@ -66,12 +71,6 @@ int main(int argc, char **argv)
     return 1 ;
   }
 
-  while(ros::ok())
-  {
-    sprintf(send_buf,"MF%dB%dL%dR%d\n" , Front , Back , Left , Right);
-    serialPuts(fd,send_buf);
-    ros::spinOnce();
-  }
-
+  ros::spin();
   return 0;
 }
