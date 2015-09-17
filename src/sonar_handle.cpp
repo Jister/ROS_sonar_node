@@ -14,6 +14,7 @@ int Right = 0;
 int angle = 0;
 int min_distance = 0;
 char send_buf[18];
+int fd;
 
 void sonarCallback(const sonar::Sonar sonar)
 {
@@ -58,7 +59,6 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "sonar_handle");
   ros::NodeHandle n;
   ros::Subscriber sub = n.subscribe("sonar_data", 1000, sonarCallback);
-  int fd;
 
   if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0)
   {
