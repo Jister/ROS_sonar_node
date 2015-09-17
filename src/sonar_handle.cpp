@@ -13,7 +13,7 @@ int Left = 0;
 int Right = 0;
 int angle = 0;
 int min_distance = 0;
-char send_buf[10];
+char send_buf[18];
 
 void sonarCallback(const sonar::Sonar sonar)
 {
