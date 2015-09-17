@@ -25,10 +25,10 @@ int sonar6_start_time;
 int sonar6_stop_time;
 int sonar6_time;
 
-sonar::Sonar sonar_raw
+sonar::Sonar sonar_raw;
 sonar::Sonar sonar_prev;
 sonar::Sonar sonar_pprev;
-sonar::Sonar sonar_flitered;
+sonar::Sonar sonar_filtered;
 
 void Interrupt1()
 {
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "sonar_node");
   ros::NodeHandle n;
   ros::Publisher chatter_pub = n.advertise<sonar::Sonar>("sonar_data", 1000);
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(20);
   float distance1 = 0;
   float distance2 = 0;   
   float distance3 = 0;   
