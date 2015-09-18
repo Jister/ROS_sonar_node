@@ -6,6 +6,7 @@
 
 #include "ros/ros.h"
 #include "sonar/Sonar.h"
+#include "sensor_msgs/LaserScan.h"
 
 int Front = 0;
 int Back = 0;
@@ -15,6 +16,21 @@ int angle = 0;
 int min_distance = 0;
 char send_buf[18];
 int fd;
+
+void scanCallback(const sensor_msgs::LaserScan laser)
+{
+  ROS_INFO("size:%d",laser.ranges.size());
+  min_distance = laser.ranges[0];
+  angle = 0;
+  for(int i=0; i<laser.ranges.size(); i++)
+  {
+    if(laser.ranges[i]<min_distance)
+    {
+      min_distance = laser.ranges[i];
+      angle=i*0.25;
+    }
+  }
+} 	
 
 void sonarCallback(const sonar::Sonar sonar)
 {
@@ -58,7 +74,8 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "sonar_handle");
   ros::NodeHandle n;
-  ros::Subscriber sub = n.subscribe("sonar_data", 1000, sonarCallback);
+  ros::Subscriber sub1 = n.subscribe("sonar_data", 1000, sonarCallback);
+  ros::Subscriber sub2 = n.subscribe("scan", 1000, scanCallback);
 
   if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0)
   {
