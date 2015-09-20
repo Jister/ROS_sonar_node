@@ -180,8 +180,8 @@ int main(int argc, char **argv)
     distance5 = sonar5_time/58;
     distance6 = sonar6_time/58;
  
-   sonar_pprev = sonar_prev;
-   sonar_prev = sonar_raw;
+    sonar_pprev = sonar_prev;
+    sonar_prev = sonar_raw;
     sonar_raw.sonar_1 = distance1;
     sonar_raw.sonar_2 = distance2;
     sonar_raw.sonar_3 = distance3;

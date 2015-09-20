@@ -115,6 +115,7 @@ add_dependencies(sonar_node sonar_generate_messages_cpp)
 add_dependencies(sonar_test sonar_generate_messages_cpp)
 add_dependencies(sonar_handle sonar_generate_messages_cpp)
 
+
 ## Specify libraries to link a library or executable target against
 target_link_libraries(sonar_node
   ${catkin_LIBRARIES}

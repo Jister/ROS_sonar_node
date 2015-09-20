@@ -14,8 +14,9 @@ int Left = 0;
 int Right = 0;
 int angle = 0;
 int min_distance = 0;
-char send_buf[18];
+char send_buf[22];
 int fd;
+int ret;
 
 void scanCallback(const sensor_msgs::LaserScan laser)
 {
@@ -34,7 +35,7 @@ void scanCallback(const sensor_msgs::LaserScan laser)
 
 void sonarCallback(const sonar::Sonar sonar)
 {
-  if(sonar.sonar_1>30 && sonar.sonar_1<80){
+/*  if(sonar.sonar_1>30 && sonar.sonar_1<80){
     Right = 2;
   }else if(sonar.sonar_1>=80 && sonar.sonar_1<120){
     Right = 1;
@@ -64,9 +65,24 @@ void sonarCallback(const sonar::Sonar sonar)
     Back = 1;
   }else{
     Back = 0;
-  }
-
-    sprintf(send_buf,"M%03d%05dF%dB%dL%dR%d\n" ,angle , min_distance, Front , Back , Left , Right);
+  }*/
+  
+    Right=sonar.sonar_1;
+    Left =sonar.sonar_2;
+    if(sonar.sonar_5<sonar.sonar_3)
+    {
+      Front=sonar.sonar_5;
+    }else{
+      Front=sonar.sonar_3;
+    }
+    if(sonar.sonar_4<sonar.sonar_6)
+    {
+      Back=sonar.sonar_4;
+    }else{
+      Back=sonar.sonar_6;
+    }
+  
+    sprintf(send_buf,"M%03d%05d%03d%03d%03d%03d\n" ,angle , min_distance, Front , Back , Left , Right);
     serialPuts(fd,send_buf);
 }
 
