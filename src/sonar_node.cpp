@@ -28,7 +28,8 @@ int sonar6_time;
 sonar::Sonar sonar_raw;      //当前声纳数据      
 sonar::Sonar sonar_prev;     //前一次声纳数据
 sonar::Sonar sonar_pprev;    //上上次的声纳数据
-sonar::Sonar sonar_flitered; //求平均后声纳数据
+sonar::Sonar sonar_filtered; //求平均后声纳数据
+
 
 void Interrupt1()             //声纳1中断
 {
