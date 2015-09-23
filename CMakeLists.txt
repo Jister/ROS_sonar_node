@@ -106,18 +106,27 @@ include_directories(
 
 ## Declare a cpp executable
 add_executable(sonar_node src/sonar_node.cpp)
+add_executable(sonar_node_2 src/sonar_node_2.cpp)
 add_executable(sonar_test src/sonar_test.cpp)
 add_executable(sonar_handle src/sonar_handle.cpp)
+add_executable(sonar_handle_2 src/sonar_handle_2.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
 add_dependencies(sonar_node sonar_generate_messages_cpp)
+add_dependencies(sonar_node_2 sonar_generate_messages_cpp)
 add_dependencies(sonar_test sonar_generate_messages_cpp)
 add_dependencies(sonar_handle sonar_generate_messages_cpp)
+add_dependencies(sonar_handle_2 sonar_generate_messages_cpp)
 
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(sonar_node
+  ${catkin_LIBRARIES}
+  wiringPi
+)
+
+target_link_libraries(sonar_node_2
   ${catkin_LIBRARIES}
   wiringPi
 )
@@ -128,6 +137,10 @@ target_link_libraries(sonar_test
 )
 
 target_link_libraries(sonar_handle
+  ${catkin_LIBRARIES}
+  wiringPi
+)
+target_link_libraries(sonar_handle_2
   ${catkin_LIBRARIES}
   wiringPi
 )
