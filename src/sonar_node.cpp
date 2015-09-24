@@ -120,7 +120,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "sonar_node");
   ros::NodeHandle n;
   ros::Publisher chatter_pub = n.advertise<sonar::Sonar>("sonar_data", 1000);
-  ros::Rate loop_rate(20);
+  ros::Rate loop_rate(25);
   float distance1 = 0;
   float distance2 = 0;   
   float distance3 = 0;   

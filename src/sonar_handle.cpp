@@ -13,7 +13,7 @@ int Back = 0;
 int Left = 0;
 int Right = 0;
 int angle = 0;
-int min_distance = 0;
+float min_distance = 0;
 char send_buf[22];
 int fd;
 int ret;
@@ -23,7 +23,7 @@ void scanCallback(const sensor_msgs::LaserScan laser)
   ROS_INFO("size:%d",laser.ranges.size());
   min_distance = laser.ranges[0];
   angle = 0;
-  for(int i=0; i<laser.ranges.size(); i++)
+  for(int i=0; i<laser.ranges.size(); i=i+4)
   {
     if(laser.ranges[i]<min_distance)
     {
@@ -31,6 +31,7 @@ void scanCallback(const sensor_msgs::LaserScan laser)
       angle=i*0.25;
     }
   }
+  min_distance = min_distance*100;
 } 	
 
 void sonarCallback(const sonar::Sonar sonar)
@@ -82,7 +83,7 @@ void sonarCallback(const sonar::Sonar sonar)
       Back=sonar.sonar_6;
     }
   
-    sprintf(send_buf,"M%03d%05d%03d%03d%03d%03d\n" ,angle , min_distance, Front , Back , Left , Right);
+    sprintf(send_buf,"M%03d%05d%03d%03d%03d%03d\n" ,angle ,(int)min_distance, Front , Back , Left , Right);
     serialPuts(fd,send_buf);
 }
 
