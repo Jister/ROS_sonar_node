@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wiringPi.h>
-
 #include "ros/ros.h"
 #include "sonar/Sonar.h"
 
@@ -29,7 +28,6 @@ sonar::Sonar sonar_raw;      //当前声纳数据
 sonar::Sonar sonar_prev;     //前一次声纳数据
 sonar::Sonar sonar_pprev;    //上上次的声纳数据
 sonar::Sonar sonar_filtered; //求平均后声纳数据
-
 
 void Interrupt1()             //声纳1中断
 {
@@ -191,7 +189,7 @@ int main(int argc, char **argv)
     }
     if(((distance1-sonar_prev.sonar_1)>300)&&(sonar_prev.sonar_1>0)&&(sonar_pprev.sonar_1>0))
     {
-      sonar_raw.sonar_1 = sonar_prev.sonar_1;
+      sonar_raw.sonar_1 = 600;
     } 
 
     sonar_raw.sonar_2 = distance2;
@@ -201,7 +199,7 @@ int main(int argc, char **argv)
     }
     if(((distance2-sonar_prev.sonar_2)>300)&&(sonar_prev.sonar_2>0)&&(sonar_pprev.sonar_2>0))
     {
-      sonar_raw.sonar_2 = sonar_prev.sonar_2;
+      sonar_raw.sonar_2 = 600;
     }
 
     sonar_raw.sonar_3 = distance3;
@@ -211,7 +209,7 @@ int main(int argc, char **argv)
     }
     if(((distance3-sonar_prev.sonar_3)>300)&&(sonar_prev.sonar_3>0)&&(sonar_pprev.sonar_3>0))
     {
-      sonar_raw.sonar_3 = sonar_prev.sonar_3;
+      sonar_raw.sonar_3 = 600;
     }
 
     sonar_raw.sonar_4 = distance4;
@@ -221,7 +219,7 @@ int main(int argc, char **argv)
     }
     if(((distance4-sonar_prev.sonar_4)>300)&&(sonar_prev.sonar_4>0)&&(sonar_pprev.sonar_4>0))
     {
-      sonar_raw.sonar_4 = sonar_prev.sonar_4;
+      sonar_raw.sonar_4 = 600;
     }
 
     sonar_raw.sonar_5 = distance5;
@@ -231,7 +229,7 @@ int main(int argc, char **argv)
     }
     if(((distance5-sonar_prev.sonar_5)>300)&&(sonar_prev.sonar_5>0)&&(sonar_pprev.sonar_5>0))
     {
-      sonar_raw.sonar_5 = sonar_prev.sonar_5;
+      sonar_raw.sonar_5 = 600;
     }
 
     sonar_raw.sonar_6 = distance6;
@@ -241,15 +239,15 @@ int main(int argc, char **argv)
     }
     if(((distance6-sonar_prev.sonar_6)>300)&&(sonar_prev.sonar_6>0)&&(sonar_pprev.sonar_6>0))
     {
-      sonar_raw.sonar_6 = sonar_prev.sonar_6;
+      sonar_raw.sonar_6 = 600;
     }
 
-    sonar_filtered.sonar_1 = (sonar_raw.sonar_1 + sonar_prev.sonar_1 + sonar_pprev.sonar_1)/3;    //求平均
-    sonar_filtered.sonar_2 = (sonar_raw.sonar_2 + sonar_prev.sonar_2 + sonar_pprev.sonar_2)/3;
-    sonar_filtered.sonar_3 = (sonar_raw.sonar_3 + sonar_prev.sonar_3 + sonar_pprev.sonar_3)/3;
-    sonar_filtered.sonar_4 = (sonar_raw.sonar_4 + sonar_prev.sonar_4 + sonar_pprev.sonar_4)/3;
-    sonar_filtered.sonar_5 = (sonar_raw.sonar_5 + sonar_prev.sonar_5 + sonar_pprev.sonar_5)/3;
-    sonar_filtered.sonar_6 = (sonar_raw.sonar_6 + sonar_prev.sonar_6 + sonar_pprev.sonar_6)/3;
+    sonar_filtered.sonar_1 = (int)(sonar_raw.sonar_1 + sonar_prev.sonar_1 + sonar_pprev.sonar_1)/3;    //求平均
+    sonar_filtered.sonar_2 = (int)(sonar_raw.sonar_2 + sonar_prev.sonar_2 + sonar_pprev.sonar_2)/3;
+    sonar_filtered.sonar_3 = (int) (sonar_raw.sonar_3 + sonar_prev.sonar_3 + sonar_pprev.sonar_3)/3;
+    sonar_filtered.sonar_4 = (int)(sonar_raw.sonar_4 + sonar_prev.sonar_4 + sonar_pprev.sonar_4)/3;
+    sonar_filtered.sonar_5 = (int)(sonar_raw.sonar_5 + sonar_prev.sonar_5 + sonar_pprev.sonar_5)/3;
+    sonar_filtered.sonar_6 = (int)(sonar_raw.sonar_6 + sonar_prev.sonar_6 + sonar_pprev.sonar_6)/3;
 
     chatter_pub.publish(sonar_filtered);
   
