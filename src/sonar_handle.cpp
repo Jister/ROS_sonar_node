@@ -3,7 +3,6 @@
 #include <string.h>
 #include <wiringPi.h>
 #include <wiringSerial.h>
-
 #include "ros/ros.h"
 #include "sonar/Sonar.h"
 #include "sensor_msgs/LaserScan.h"
@@ -82,9 +81,6 @@ void sonarCallback(const sonar::Sonar sonar)
     }else{
       Back=sonar.sonar_6;
     }
-  
-    sprintf(send_buf,"M%03d%05d%03d%03d%03d%03d\n" ,angle ,(int)min_distance, Front , Back , Left , Right);
-    serialPuts(fd,send_buf);
 }
 
 int main(int argc, char **argv)
@@ -93,6 +89,7 @@ int main(int argc, char **argv)
   ros::NodeHandle n;
   ros::Subscriber sub1 = n.subscribe("sonar_data", 1000, sonarCallback);
   ros::Subscriber sub2 = n.subscribe("scan", 1000, scanCallback);
+  ros::Rate loop_rate(25);
 
   if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0)
   {
@@ -104,8 +101,12 @@ int main(int argc, char **argv)
     fprintf (stdout, "Unable to start wiringPi: %s\n", strerror (errno)) ;
     return 1 ;
   }
-
-  ros::spin();
-  
+  while(ros::ok())
+  {
+    sprintf(send_buf,"M%03d%05d%03d%03d%03d%03d\n" ,angle ,(int)min_distance, Front , Back , Left , Right);
+    serialPuts(fd,send_buf); 
+    ros::spinOnce();
+    loop_rate.sleep();
+  }
   return 0;
 }
