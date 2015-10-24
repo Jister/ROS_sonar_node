@@ -23,7 +23,9 @@ int sonar5_time;
 int sonar6_start_time;
 int sonar6_stop_time;
 int sonar6_time;
-
+int sonar7_start_time;
+int sonar7_stop_time;
+int sonar7_time;
 sonar::Sonar_raw sonar_raw;      //当前声纳数据      
 sonar::Sonar_raw sonar_prev;     //前一次声纳数据
 sonar::Sonar_raw sonar_pprev;    //上上次的声纳数据
@@ -109,6 +111,20 @@ void Interrupt6()
   {
     sonar6_stop_time = micros();
     digitalWrite(26,LOW);
+    digitalWrite(27,HIGH);
+  }
+}
+
+void Interrupt7()
+{
+  if(digitalRead(6) == 1)
+  {
+    sonar7_start_time = micros();
+  }
+  if(digitalRead(6) == 0)
+  {
+    sonar7_stop_time = micros();
+    digitalWrite(27,LOW);
     digitalWrite(21,HIGH);
   }
 }
@@ -124,7 +140,15 @@ int main(int argc, char **argv)
   float distance3 = 0;   
   float distance4 = 0;   
   float distance5 = 0;   
-  float distance6 = 0;   
+  float distance6 = 0;
+  float distance7 = 0;
+  int count1=0;
+  int count2=0;
+  int count3=0;
+  int count4=0;
+  int count5=0;
+  int count6=0;
+  int count7=0;
   wiringPiSetup();
   pinMode(21, OUTPUT);               //设置引脚为输出模式
   pinMode(22, OUTPUT);
@@ -132,12 +156,14 @@ int main(int argc, char **argv)
   pinMode(24, OUTPUT);
   pinMode(25, OUTPUT);
   pinMode(26, OUTPUT);
+  pinMode(27, OUTPUT);
   digitalWrite(21, HIGH);            //开启声纳1
   digitalWrite(22, LOW);
   digitalWrite(23, LOW);
   digitalWrite(24, LOW);
   digitalWrite(25, LOW);
   digitalWrite(26, LOW);
+  digitalWrite(27, LOW);
 
   wiringPiISR(0,INT_EDGE_BOTH,&Interrupt1);    //设置中断，为上升沿下降沿都触发
   wiringPiISR(1,INT_EDGE_BOTH,&Interrupt2);
@@ -145,6 +171,7 @@ int main(int argc, char **argv)
   wiringPiISR(3,INT_EDGE_BOTH,&Interrupt4);
   wiringPiISR(4,INT_EDGE_BOTH,&Interrupt5);
   wiringPiISR(5,INT_EDGE_BOTH,&Interrupt6);
+  wiringPiISR(6,INT_EDGE_BOTH,&Interrupt7);
 
   while (ros::ok())
   {
@@ -172,12 +199,17 @@ int main(int argc, char **argv)
     {
       sonar6_time = sonar6_stop_time - sonar6_start_time;
     }
+    if(sonar7_stop_time > sonar7_start_time)
+    {
+      sonar7_time = sonar7_stop_time - sonar7_start_time;
+    }
     distance1 = sonar1_time/58;                  //计算声纳距离
     distance2 = sonar2_time/58;
     distance3 = sonar3_time/58;
     distance4 = sonar4_time/58;
     distance5 = sonar5_time/58;
     distance6 = sonar6_time/58;
+    distance7 = sonar7_time/58;
  
     sonar_pprev = sonar_prev;
     sonar_prev = sonar_raw;

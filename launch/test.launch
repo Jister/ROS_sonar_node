@@ -1,6 +1,6 @@
 <launch>
   <node pkg="sonar" name="sonar_node" type="sonar_node" />
-  <node pkg="sonar" name="sonar_handle" type="sonar_handle" />
+  <node pkg="sonar" name="data_handle" type="date_handle" />
 
   <node pkg="hokuyo_node" name="hokuyo" type="hokuyo_node" respawn="false" output="screen">
     <param name="calibrate_time" type="bool" value="false"/>

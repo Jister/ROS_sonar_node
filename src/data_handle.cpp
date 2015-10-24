@@ -65,15 +65,12 @@ int main(int argc, char **argv)
     sonar::Sonar sonar_msg;
     sonar::Laser laser_msg;
     
-    sonar_msg.sonar_front = 100.0;
-   // sonar_msg.sonar_front = Front;
+    sonar_msg.sonar_front = Front;
     sonar_msg.sonar_behind = Back;
     sonar_msg.sonar_left = Left;
     sonar_msg.sonar_right = Right;
-   // laser_msg.min_distance = min_distance;
-    laser_msg.min_distance = 200.0;
-   // laser_msg.angle = angle;
-    laser_msg.angle = 300.0;
+    laser_msg.min_distance = min_distance;
+    laser_msg.angle = angle;
     
     sonar_pub.publish(sonar_msg);
     laser_pub.publish(laser_msg);
