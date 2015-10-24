@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <string.h>
 #include <wiringPi.h>
 #include "ros/ros.h"
 #include "sonar/Sonar_raw.h"
+
+#define Sonar_filter 	100
 
 int sonar1_start_time;
 int sonar1_stop_time;
@@ -219,9 +222,16 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_1 = 600;
     }
-    if(((distance1-sonar_prev.sonar_1)>300)&&(sonar_prev.sonar_1>0)&&(sonar_pprev.sonar_1>0))
+    if(((fabs(distance1-sonar_prev.sonar_1)>Sonar_filter)&&(sonar_prev.sonar_1>0)&&(sonar_pprev.sonar_1>0))
     {
-      sonar_raw.sonar_1 = 600;
+      if(count1<3)
+      {
+        sonar_raw.sonar_1 = sonar_prev.sonar_1;
+      }else
+      {
+        sonar_raw.sonar_1 = distance1;
+        count1 = 0;
+      }
     } 
 
     sonar_raw.sonar_2 = distance2;
@@ -229,19 +239,33 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_2 = 600;
     }
-    if(((distance2-sonar_prev.sonar_2)>300)&&(sonar_prev.sonar_2>0)&&(sonar_pprev.sonar_2>0))
+    if(((fabs(distance2-sonar_prev.sonar_2)>Sonar_filter)&&(sonar_prev.sonar_2>0)&&(sonar_pprev.sonar_2>0))
     {
-      sonar_raw.sonar_2 = 600;
-    }
+      if(count2<3)
+      {
+        sonar_raw.sonar_2 = sonar_prev.sonar_2;
+      }else
+      {
+        sonar_raw.sonar_2 = distance2;
+        count2 = 0;
+      }
+    } 
 
     sonar_raw.sonar_3 = distance3;
     if(distance3>600)
     {
       sonar_raw.sonar_3 = 600;
     }
-    if(((distance3-sonar_prev.sonar_3)>300)&&(sonar_prev.sonar_3>0)&&(sonar_pprev.sonar_3>0))
+    if(((fabs(distance3-sonar_prev.sonar_3)>Sonar_filter)&&(sonar_prev.sonar_3>0)&&(sonar_pprev.sonar_3>0))
     {
-      sonar_raw.sonar_3 = 600;
+      if(count3<3)
+      {
+        sonar_raw.sonar_3 = sonar_prev.sonar_3;
+      }else
+      {
+        sonar_raw.sonar_3 = distance3;
+        count3 = 0;
+      }
     }
 
     sonar_raw.sonar_4 = distance4;
@@ -249,9 +273,16 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_4 = 600;
     }
-    if(((distance4-sonar_prev.sonar_4)>300)&&(sonar_prev.sonar_4>0)&&(sonar_pprev.sonar_4>0))
+    if(((fabs(distance4-sonar_prev.sonar_4)>Sonar_filter)&&(sonar_prev.sonar_4>0)&&(sonar_pprev.sonar_4>0))
     {
-      sonar_raw.sonar_4 = 600;
+      if(count4<3)
+      {
+        sonar_raw.sonar_4 = sonar_prev.sonar_4;
+      }else
+      {
+        sonar_raw.sonar_4 = distance4;
+        count4 = 0;
+      }
     }
 
     sonar_raw.sonar_5 = distance5;
@@ -259,9 +290,16 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_5 = 600;
     }
-    if(((distance5-sonar_prev.sonar_5)>300)&&(sonar_prev.sonar_5>0)&&(sonar_pprev.sonar_5>0))
+    if(((fabs(distance5-sonar_prev.sonar_5)>Sonar_filter)&&(sonar_prev.sonar_5>0)&&(sonar_pprev.sonar_5>0))
     {
-      sonar_raw.sonar_5 = 600;
+      if(count5<3)
+      {
+        sonar_raw.sonar_5 = sonar_prev.sonar_5;
+      }else
+      {
+        sonar_raw.sonar_5 = distance5;
+        count5 = 0;
+      }
     }
 
     sonar_raw.sonar_6 = distance6;
@@ -269,9 +307,33 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_6 = 600;
     }
-    if(((distance6-sonar_prev.sonar_6)>300)&&(sonar_prev.sonar_6>0)&&(sonar_pprev.sonar_6>0))
+    if(((fabs(distance6-sonar_prev.sonar_6)>Sonar_filter)&&(sonar_prev.sonar_6>0)&&(sonar_pprev.sonar_6>0))
     {
-      sonar_raw.sonar_6 = 600;
+      if(count6<3)
+      {
+        sonar_raw.sonar_6 = sonar_prev.sonar_6;
+      }else
+      {
+        sonar_raw.sonar_6 = distance6;
+        count6 = 0;
+      }
+    }
+
+    sonar_raw.sonar_7 = distance7;
+    if(distance7>600)
+    {
+      sonar_raw.sonar_7 = 600;
+    }
+    if(((fabs(distance7-sonar_prev.sonar_7)>Sonar_filter)&&(sonar_prev.sonar_7>0)&&(sonar_pprev.sonar_7>0))
+    {
+      if(count6<3)
+      {
+        sonar_raw.sonar_7 = sonar_prev.sonar_7;
+      }else
+      {
+        sonar_raw.sonar_7 = distance7;
+        count6 = 0;
+      }
     }
 
     sonar_filtered.sonar_1 = (int)(sonar_raw.sonar_1 + sonar_prev.sonar_1 + sonar_pprev.sonar_1)/3;    //求平均
@@ -280,6 +342,7 @@ int main(int argc, char **argv)
     sonar_filtered.sonar_4 = (int)(sonar_raw.sonar_4 + sonar_prev.sonar_4 + sonar_pprev.sonar_4)/3;
     sonar_filtered.sonar_5 = (int)(sonar_raw.sonar_5 + sonar_prev.sonar_5 + sonar_pprev.sonar_5)/3;
     sonar_filtered.sonar_6 = (int)(sonar_raw.sonar_6 + sonar_prev.sonar_6 + sonar_pprev.sonar_6)/3;
+    sonar_filtered.sonar_7 = (int)(sonar_raw.sonar_7 + sonar_prev.sonar_7 + sonar_pprev.sonar_7)/3;
 
     chatter_pub.publish(sonar_filtered);
   
