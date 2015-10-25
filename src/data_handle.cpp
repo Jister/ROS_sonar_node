@@ -33,6 +33,7 @@ void scanCallback(const sensor_msgs::LaserScan laser)
     }
   }
   min_distance = min_distance*100;
+  angle = angle-45;
 } 
 
 void poseCallback(const geometry_msgs::Pose2D msg)
