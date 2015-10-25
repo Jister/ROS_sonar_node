@@ -7,14 +7,17 @@
 #include "sonar/Sonar_raw.h"
 #include "sonar/Laser.h"
 #include "sensor_msgs/LaserScan.h"
+#include <geometry_msgs/Pose2D.h>
 
-int Front = 0;
-int Back = 0;
-int Left = 0;
-int Right = 0;
+float Front = 0;
+float Back = 0;
+float Left = 0;
+float Right = 0;
+float up = 0;
 int angle = 0;
-int up = 0;
 float min_distance = 0;
+float laser_x = 0;
+float laser_y = 0;
 
 void scanCallback(const sensor_msgs::LaserScan laser)
 {
@@ -30,6 +33,12 @@ void scanCallback(const sensor_msgs::LaserScan laser)
     }
   }
   min_distance = min_distance*100;
+} 
+
+void poseCallback(const geometry_msgs::Pose2D msg)
+{
+  laser_x = msg.x;
+  laser_y = msg.y;
 } 	
 
 void sonarCallback(const sonar::Sonar_raw sonar)
@@ -58,6 +67,7 @@ int main(int argc, char **argv)
   ros::Publisher laser_pub = n.advertise<sonar::Laser>("laser_send",1000);
   ros::Subscriber sub1 = n.subscribe("sonar_data", 1000, sonarCallback);
   ros::Subscriber sub2 = n.subscribe("scan", 1000, scanCallback);
+  ros::Subscriber sub3 = n.subscribe("pose2D", 1000, poseCallback);
   ros::Rate loop_rate(25);
 
   while(ros::ok())
@@ -71,6 +81,8 @@ int main(int argc, char **argv)
     sonar_msg.sonar_right = Right;
     laser_msg.min_distance = min_distance;
     laser_msg.angle = angle;
+    laser_msg.laser_x = laser_x;
+    laser_msg.laser_y = laser_y;
     
     sonar_pub.publish(sonar_msg);
     laser_pub.publish(laser_msg);
