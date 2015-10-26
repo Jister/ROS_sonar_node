@@ -222,11 +222,12 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_1 = 600;
     }
-    if(((fabs(distance1-sonar_prev.sonar_1)>Sonar_filter)&&(sonar_prev.sonar_1>0)&&(sonar_pprev.sonar_1>0))
+    if((fabs(distance1-sonar_prev.sonar_1)>Sonar_filter)&&(sonar_prev.sonar_1>0)&&(sonar_pprev.sonar_1>0))
     {
       if(count1<3)
       {
         sonar_raw.sonar_1 = sonar_prev.sonar_1;
+        count1++;
       }else
       {
         sonar_raw.sonar_1 = distance1;
@@ -239,11 +240,12 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_2 = 600;
     }
-    if(((fabs(distance2-sonar_prev.sonar_2)>Sonar_filter)&&(sonar_prev.sonar_2>0)&&(sonar_pprev.sonar_2>0))
+    if((fabs(distance2-sonar_prev.sonar_2)>Sonar_filter)&&(sonar_prev.sonar_2>0)&&(sonar_pprev.sonar_2>0))
     {
       if(count2<3)
       {
         sonar_raw.sonar_2 = sonar_prev.sonar_2;
+        count2++;
       }else
       {
         sonar_raw.sonar_2 = distance2;
@@ -256,11 +258,12 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_3 = 600;
     }
-    if(((fabs(distance3-sonar_prev.sonar_3)>Sonar_filter)&&(sonar_prev.sonar_3>0)&&(sonar_pprev.sonar_3>0))
+    if((fabs(distance3-sonar_prev.sonar_3)>Sonar_filter)&&(sonar_prev.sonar_3>0)&&(sonar_pprev.sonar_3>0))
     {
       if(count3<3)
       {
         sonar_raw.sonar_3 = sonar_prev.sonar_3;
+        count3++;
       }else
       {
         sonar_raw.sonar_3 = distance3;
@@ -273,11 +276,12 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_4 = 600;
     }
-    if(((fabs(distance4-sonar_prev.sonar_4)>Sonar_filter)&&(sonar_prev.sonar_4>0)&&(sonar_pprev.sonar_4>0))
+    if((fabs(distance4-sonar_prev.sonar_4)>Sonar_filter)&&(sonar_prev.sonar_4>0)&&(sonar_pprev.sonar_4>0))
     {
       if(count4<3)
       {
         sonar_raw.sonar_4 = sonar_prev.sonar_4;
+        count4++;
       }else
       {
         sonar_raw.sonar_4 = distance4;
@@ -290,11 +294,12 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_5 = 600;
     }
-    if(((fabs(distance5-sonar_prev.sonar_5)>Sonar_filter)&&(sonar_prev.sonar_5>0)&&(sonar_pprev.sonar_5>0))
+    if((fabs(distance5-sonar_prev.sonar_5)>Sonar_filter)&&(sonar_prev.sonar_5>0)&&(sonar_pprev.sonar_5>0))
     {
       if(count5<3)
       {
         sonar_raw.sonar_5 = sonar_prev.sonar_5;
+        count5++;
       }else
       {
         sonar_raw.sonar_5 = distance5;
@@ -307,11 +312,12 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_6 = 600;
     }
-    if(((fabs(distance6-sonar_prev.sonar_6)>Sonar_filter)&&(sonar_prev.sonar_6>0)&&(sonar_pprev.sonar_6>0))
+    if((fabs(distance6-sonar_prev.sonar_6)>Sonar_filter)&&(sonar_prev.sonar_6>0)&&(sonar_pprev.sonar_6>0))
     {
       if(count6<3)
       {
         sonar_raw.sonar_6 = sonar_prev.sonar_6;
+        count6++;
       }else
       {
         sonar_raw.sonar_6 = distance6;
@@ -324,15 +330,16 @@ int main(int argc, char **argv)
     {
       sonar_raw.sonar_7 = 600;
     }
-    if(((fabs(distance7-sonar_prev.sonar_7)>Sonar_filter)&&(sonar_prev.sonar_7>0)&&(sonar_pprev.sonar_7>0))
+    if((fabs(distance7-sonar_prev.sonar_7)>Sonar_filter)&&(sonar_prev.sonar_7>0)&&(sonar_pprev.sonar_7>0))
     {
-      if(count6<3)
+      if(count7<3)
       {
         sonar_raw.sonar_7 = sonar_prev.sonar_7;
+        count7++;
       }else
       {
         sonar_raw.sonar_7 = distance7;
-        count6 = 0;
+        count7 = 0;
       }
     }
 
