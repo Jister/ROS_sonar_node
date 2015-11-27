@@ -6,6 +6,7 @@
 
 #define bridge_width  14
 #define bridge_length  14
+#define valid_value  4
 
 struct target{
   float distance;
@@ -24,6 +25,10 @@ float x_1 = 0;
 float y_1 = 0;
 float x_2 = 0;
 float y_2 = 0;
+float x_3 = 0;
+float y_3 = 0;
+float x_4 = 0;
+float y_4 = 0;
 float x = 0;
 float y = 0;
 float pose_x = 0;
@@ -45,6 +50,7 @@ void scanCallback(const sensor_msgs::LaserScan msg)
   range_4.angle = 0;
   range_4.count = 0;
 
+//second
   for(int i=msg.ranges.size()/2;i<msg.ranges.size()*5/6;i++)
   {
     if(!isnan(msg.ranges[i])){
@@ -54,6 +60,7 @@ void scanCallback(const sensor_msgs::LaserScan msg)
       }
   }
 
+//first
   for(int i=msg.ranges.size()/6;i<msg.ranges.size()/2;i++)
   {
     if(!isnan(msg.ranges[i])){
@@ -63,6 +70,7 @@ void scanCallback(const sensor_msgs::LaserScan msg)
       }
   }
 
+//third
   for(int i=msg.ranges.size()*5/6;i<msg.ranges.size();i++)
   {
     if(!isnan(msg.ranges[i])){
@@ -72,18 +80,66 @@ void scanCallback(const sensor_msgs::LaserScan msg)
       }
   }
 
-  range_1.distance = range_1.distance/range_1.count;
-  range_1.angle = range_1.angle/range_1.count*0.25 - 45;
-  x_1 = range_1.distance*cos(range_1.angle/180*3.14);
-  y_1 = range_1.distance*sin(range_1.angle/180*3.14);
+//forth
+  for(int i=msg.ranges.size();i<msg.ranges.size()/6;i++)
+  {
+    if(!isnan(msg.ranges[i])){
+        range_4.distance = range_4.distance + msg.ranges[i];
+        range_4.angle = range_4.angle + i;
+        range_4.count++;
+      }
+  }
 
-  range_2.distance = range_2.distance/range_2.count;
-  range_2.angle = range_2.angle/range_2.count*0.25 - 45;
-  x_2 = range_2.distance*cos(range_2.angle/180*3.14);
-  y_2 = range_2.distance*sin(range_2.angle/180*3.14);
-  
-  x = (bridge_width - x_2 - x_1)/2;
-  y = (y_1 + y_2)/2;
+  if(range_1.count>=valid_value){
+    range_1.distance = range_1.distance/range_1.count;
+    range_1.angle = range_1.angle/range_1.count*0.25 - 45;
+    x_1 = range_1.distance*cos(range_1.angle/180*3.14);
+    y_1 = range_1.distance*sin(range_1.angle/180*3.14);
+  }else{
+    x_1 = 0;
+    y_1 = 0;
+  }
+
+  if(range_2.count>=valid_value){
+    range_2.distance = range_2.distance/range_2.count;
+    range_2.angle = range_2.angle/range_2.count*0.25 - 45;
+    x_2 = range_2.distance*cos(range_2.angle/180*3.14);
+    y_2 = range_2.distance*sin(range_2.angle/180*3.14);
+  }else{
+    x_2 = 0;
+    y_2 = 0;
+  }
+
+  if(range_3.count>=valid_value){
+    range_3.distance = range_3.distance/range_3.count;
+    range_3.angle = range_3.angle/range_3.count*0.25 - 45;
+    x_3 = range_3.distance*cos(range_2.angle/180*3.14);
+    y_3 = range_3.distance*sin(range_2.angle/180*3.14);
+  }else{
+    x_3 = 0;
+    y_3 = 0;
+  }
+
+  if(range_4.count>=valid_value){
+    range_4.distance = range_4.distance/range_4.count;
+    range_4.angle = range_4.angle/range_4count*0.25 - 45;
+    x_4 = range_4.distance*cos(range_4.angle/180*3.14);
+    y_4 = range_4.distance*sin(range_4.angle/180*3.14);
+  }else{
+    x_4 = 0;
+    y_4 = 0;
+  }
+
+  if(range_1.count>=valid_value && range_2.count>=valid_value){
+    x = (bridge_width - x_2 - x_1)/2;
+    y = (y_1 + y_2)/2;
+  }else if(range_1.count>=valid_value && range_2.count<valid_value){
+    x = bridge_width- x_1;
+    y = y_1;
+  }else if(range_1.count<valid_value && range_2.count>=valid_value){
+    x = -x_2;
+    y = y_2;
+  }
 
   if(x_0 == 0){
     x_0 = x;
