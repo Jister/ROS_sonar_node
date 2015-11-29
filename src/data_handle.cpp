@@ -47,18 +47,9 @@ void sonarCallback(const sonar::Sonar_raw sonar)
 {
     Right=sonar.sonar_1;
     Left =sonar.sonar_2;
-    if(sonar.sonar_5<sonar.sonar_3)
-    {
-      Front=sonar.sonar_5;
-    }else{
-      Front=sonar.sonar_3;
-    }
-    if(sonar.sonar_4<sonar.sonar_6)
-    {
-      Back=sonar.sonar_4;
-    }else{
-      Back=sonar.sonar_6;
-    }
+    Front=sonar.sonar_3;
+    Back=sonar.sonar_4;
+    Up=sonar.sonar_5;
 }
 
 int main(int argc, char **argv)
@@ -81,6 +72,7 @@ int main(int argc, char **argv)
     sonar_msg.sonar_behind = Back;
     sonar_msg.sonar_left = Left;
     sonar_msg.sonar_right = Right;
+    sonar_msg.sonar_up = Up;
     laser_msg.min_distance = min_distance;
     laser_msg.angle = angle;
     laser_msg.laser_x = laser_x;
