@@ -100,7 +100,7 @@ void Interrupt5()
   {
     sonar5_stop_time = micros();
     digitalWrite(25,LOW);
-    digitalWrite(26,HIGH);
+    digitalWrite(21,HIGH);
   }
 }
 
