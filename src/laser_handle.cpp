@@ -2,7 +2,6 @@
 #include <math.h>
 #include "std_msgs/String.h"
 #include "sensor_msgs/LaserScan.h"
-//#include <mavros_extras/Attitude.h>
 
 #define bridge_width  14
 #define bridge_length  14
@@ -147,12 +146,9 @@ void scanCallback(const sensor_msgs::LaserScan msg)
   if(y_0 == 0){
     y_0 = y;
   }
-
+  
   pose_x = x - x_0;
   pose_y = y - y_0;
-
-  ROS_INFO("x:%f",pose_x);
-  ROS_INFO("y:%f",pose_y);
 }
 
 int main(int argc, char **argv)
@@ -160,7 +156,20 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "laser_handle");
   ros::NodeHandle n;
   ros::Subscriber sub = n.subscribe("/scan_filtered", 1, scanCallback);
-  ros::spin();
+  ros::Publisher pub = n.advertise<geometry_msgs::PoseStamped>("mavros/vision_pose/pose", 1000);
+  ros::Rate loop_rate(50);
 
+  while(ros::ok())
+  {
+    geometry_msgs::PoseStamped vicon;
+    vicon.header.stamp = ros::Time::now();
+    vicon.pose.position.x = -pose_y;
+    vicon.pose.position.y = pose_x;
+    pub.publish(viocn);
+    ROS_INFO("position:%f-%f-%f", vicon.pose.position.x,vicon.pose.position.y,vicon.pose.position.z);
+      
+    ros::spinOnce();
+    loop_rate.sleep();
+  }
   return 0;
 }
