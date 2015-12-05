@@ -5,8 +5,7 @@
 #include <wiringPi.h>
 #include "ros/ros.h"
 #include "sonar/Sonar_raw.h"
-
-#define Sonar_filter 	200
+#define Sonar_filter 	150
 
 int sonar1_start_time;
 int sonar1_stop_time;
@@ -218,129 +217,178 @@ int main(int argc, char **argv)
     sonar_prev = sonar_raw;
    
     sonar_raw.sonar_1 = distance1;
-    if(distance1>600)
+    if(distance1>800)
     {
-      sonar_raw.sonar_1 = 600;
-    }
-    if((fabs(distance1-sonar_prev.sonar_1)>Sonar_filter)&&(sonar_prev.sonar_1>0)&&(sonar_pprev.sonar_1>0))
+	sonar_raw.sonar_1 = sonar_prev.sonar_1;
+    }else
     {
-      if(count1<3)
-      {
-        sonar_raw.sonar_1 = sonar_prev.sonar_1;
-        count1++;
-      }else
-      {
-        sonar_raw.sonar_1 = distance1;
-        count1 = 0;
-      }
+   	if(distance1>600)
+    	{
+      		sonar_raw.sonar_1 = 600;
+      		distance1 = 600;
+   	}
+    	if((fabs(distance1-sonar_prev.sonar_1)>Sonar_filter)&&(sonar_prev.sonar_1>0)&&(sonar_pprev.sonar_1>0))
+    	{
+      		if(count1<3)
+      		{
+        		sonar_raw.sonar_1 = sonar_prev.sonar_1;
+        		count1++;
+      		}else
+      		{
+        		sonar_raw.sonar_1 = distance1;
+        		count1 = 0;
+      		}
+    	}
     } 
 
     sonar_raw.sonar_2 = distance2;
-    if(distance2>600)
+    if(distance2>800)
     {
-      sonar_raw.sonar_2 = 600;
-    }
-    if((fabs(distance2-sonar_prev.sonar_2)>Sonar_filter)&&(sonar_prev.sonar_2>0)&&(sonar_pprev.sonar_2>0))
+	sonar_raw.sonar_2 = sonar_prev.sonar_2;
+    }else
     {
-      if(count2<3)
-      {
-        sonar_raw.sonar_2 = sonar_prev.sonar_2;
-        count2++;
-      }else
-      {
-        sonar_raw.sonar_2 = distance2;
-        count2 = 0;
-      }
+	if(distance2>600)
+    	{
+      		sonar_raw.sonar_2 = 600;
+      		distance2 = 600;
+    	}
+    	if((fabs(distance2-sonar_prev.sonar_2)>Sonar_filter)&&(sonar_prev.sonar_2>0)&&(sonar_pprev.sonar_2>0))
+    	{
+      		if(count2<3)
+      		{
+        		sonar_raw.sonar_2 = sonar_prev.sonar_2;
+        		count2++;
+      		}else
+      		{
+        		sonar_raw.sonar_2 = distance2;
+        		count2 = 0;
+      		}
+    	}
     } 
 
     sonar_raw.sonar_3 = distance3;
-    if(distance3>600)
+    if(distance3>800)
     {
-      sonar_raw.sonar_3 = 600;
-    }
-    if((fabs(distance3-sonar_prev.sonar_3)>Sonar_filter)&&(sonar_prev.sonar_3>0)&&(sonar_pprev.sonar_3>0))
+	sonar_raw.sonar_3 = sonar_prev.sonar_3;
+    }else
     {
-      if(count3<3)
-      {
-        sonar_raw.sonar_3 = sonar_prev.sonar_3;
-        count3++;
-      }else
-      {
-        sonar_raw.sonar_3 = distance3;
-        count3 = 0;
-      }
+	if(distance3>600)
+    	{
+      		sonar_raw.sonar_3 = 600;
+      		distance3 = 600;
+    	}
+    	if((fabs(distance3-sonar_prev.sonar_3)>Sonar_filter)&&(sonar_prev.sonar_3>0)&&(sonar_pprev.sonar_3>0))
+    	{
+      		if(count3<3)
+      		{
+        		sonar_raw.sonar_3 = sonar_prev.sonar_3;
+        		count3++;
+      		}else
+      		{
+        		sonar_raw.sonar_3 = distance3;
+        		count3 = 0;
+      		}		
+    	}
     }
 
     sonar_raw.sonar_4 = distance4;
-    if(distance4>600)
+    if(distance4>800)
     {
-      sonar_raw.sonar_4 = 600;
-    }
-    if((fabs(distance4-sonar_prev.sonar_4)>Sonar_filter)&&(sonar_prev.sonar_4>0)&&(sonar_pprev.sonar_4>0))
+	sonar_raw.sonar_4 = sonar_prev.sonar_4;
+    }else
     {
-      if(count4<3)
-      {
-        sonar_raw.sonar_4 = sonar_prev.sonar_4;
-        count4++;
-      }else
-      {
-        sonar_raw.sonar_4 = distance4;
-        count4 = 0;
-      }
+	if(distance4>600)
+    	{
+      		sonar_raw.sonar_4 = 600;
+      		distance4 = 600;
+    	}
+    	if((fabs(distance4-sonar_prev.sonar_4)>Sonar_filter)&&(sonar_prev.sonar_4>0)&&(sonar_pprev.sonar_4>0))
+    	{
+      		if(count4<3)
+      		{
+        		sonar_raw.sonar_4 = sonar_prev.sonar_4;
+        		count4++;
+      		}else
+      		{
+        		sonar_raw.sonar_4 = distance4;
+        		count4 = 0;
+      		}		
+    	}
     }
 
     sonar_raw.sonar_5 = distance5;
-    if(distance5>600)
+    if(distance5>800)
     {
-      sonar_raw.sonar_5 = 600;
-    }
-    if((fabs(distance5-sonar_prev.sonar_5)>Sonar_filter)&&(sonar_prev.sonar_5>0)&&(sonar_pprev.sonar_5>0))
+	sonar_raw.sonar_5 = sonar_prev.sonar_5;
+    }else
     {
-      if(count5<3)
-      {
-        sonar_raw.sonar_5 = sonar_prev.sonar_5;
-        count5++;
-      }else
-      {
-        sonar_raw.sonar_5 = distance5;
-        count5 = 0;
-      }
+	if(distance5>600)
+    	{
+      		sonar_raw.sonar_5 = 600;
+      		distance5 = 600;
+    	}
+    	if((fabs(distance5-sonar_prev.sonar_5)>Sonar_filter)&&(sonar_prev.sonar_5>0)&&(sonar_pprev.sonar_5>0))
+    	{
+      		if(count5<3)
+      		{
+        		sonar_raw.sonar_5 = sonar_prev.sonar_5;
+        		count5++;
+      		}else
+      		{
+        		sonar_raw.sonar_5 = distance5;
+        		count5 = 0;
+      		}		
+    	}
     }
 
     sonar_raw.sonar_6 = distance6;
-    if(distance6>600)
+    if(distance6>800)
     {
-      sonar_raw.sonar_6 = 600;
-    }
-    if((fabs(distance6-sonar_prev.sonar_6)>Sonar_filter)&&(sonar_prev.sonar_6>0)&&(sonar_pprev.sonar_6>0))
+	sonar_raw.sonar_6 = sonar_prev.sonar_6;
+    }else
     {
-      if(count6<3)
-      {
-        sonar_raw.sonar_6 = sonar_prev.sonar_6;
-        count6++;
-      }else
-      {
-        sonar_raw.sonar_6 = distance6;
-        count6 = 0;
-      }
+	if(distance6>600)
+    	{
+      		sonar_raw.sonar_6 = 600;
+      		distance6 = 600;
+    	}
+    	if((fabs(distance6-sonar_prev.sonar_6)>Sonar_filter)&&(sonar_prev.sonar_6>0)&&(sonar_pprev.sonar_6>0))
+    	{
+      		if(count6<3)
+      		{
+        		sonar_raw.sonar_6 = sonar_prev.sonar_6;
+        		count6++;
+      		}else
+      		{
+        		sonar_raw.sonar_6 = distance6;
+        		count6 = 0;
+      		}		
+    	}
     }
 
-    sonar_raw.sonar_7 = distance7;
-    if(distance7>600)
+   sonar_raw.sonar_7 = distance7;
+    if(distance7>800)
     {
-      sonar_raw.sonar_7 = 600;
-    }
-    if((fabs(distance7-sonar_prev.sonar_7)>Sonar_filter)&&(sonar_prev.sonar_7>0)&&(sonar_pprev.sonar_7>0))
+	sonar_raw.sonar_7 = sonar_prev.sonar_7;
+    }else
     {
-      if(count7<3)
-      {
-        sonar_raw.sonar_7 = sonar_prev.sonar_7;
-        count7++;
-      }else
-      {
-        sonar_raw.sonar_7 = distance7;
-        count7 = 0;
-      }
+	if(distance7>600)
+    	{
+      		sonar_raw.sonar_7 = 600;
+      		distance7 = 600;
+    	}
+    	if((fabs(distance7-sonar_prev.sonar_7)>Sonar_filter)&&(sonar_prev.sonar_7>0)&&(sonar_pprev.sonar_7>0))
+    	{
+      		if(count7<3)
+      		{
+        		sonar_raw.sonar_7 = sonar_prev.sonar_7;
+        		count7++;
+      		}else
+      		{
+        		sonar_raw.sonar_7 = distance7;
+        		count7 = 0;
+      		}		
+    	}
     }
 
     sonar_filtered.sonar_1 = (int)(sonar_raw.sonar_1 + sonar_prev.sonar_1 + sonar_pprev.sonar_1)/3;    //求平均
