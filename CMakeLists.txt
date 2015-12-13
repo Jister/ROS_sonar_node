@@ -108,6 +108,7 @@ include_directories(
 ## Declare a cpp executable
 add_executable(sonar_node src/sonar_node.cpp)
 add_executable(data_handle src/data_handle.cpp)
+add_executable(laser_handle src/laser_handle.cpp)
 
 
 ## Add cmake target dependencies of the executable/library
@@ -125,6 +126,10 @@ target_link_libraries(sonar_node
 target_link_libraries(data_handle
   ${catkin_LIBRARIES}
   wiringPi
+)
+
+target_link_libraries(laser_handle
+  ${catkin_LIBRARIES}
 )
 #############
 ## Install ##

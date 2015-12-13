@@ -2,6 +2,7 @@
 #include <math.h>
 #include "std_msgs/String.h"
 #include "sensor_msgs/LaserScan.h"
+#include "geometry_msgs/PoseStamped.h"
 
 #define bridge_width  14
 #define bridge_length  14
@@ -121,7 +122,7 @@ void scanCallback(const sensor_msgs::LaserScan msg)
 
   if(range_4.count>=valid_value){
     range_4.distance = range_4.distance/range_4.count;
-    range_4.angle = range_4.angle/range_4count*0.25 - 45;
+    range_4.angle = range_4.angle/range_4.count*0.25 - 45;
     x_4 = range_4.distance*cos(range_4.angle/180*3.14);
     y_4 = range_4.distance*sin(range_4.angle/180*3.14);
   }else{
@@ -165,7 +166,7 @@ int main(int argc, char **argv)
     vicon.header.stamp = ros::Time::now();
     vicon.pose.position.x = -pose_y;
     vicon.pose.position.y = pose_x;
-    pub.publish(viocn);
+    pub.publish(vicon);
     ROS_INFO("position:%f-%f-%f", vicon.pose.position.x,vicon.pose.position.y,vicon.pose.position.z);
       
     ros::spinOnce();

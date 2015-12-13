@@ -9,12 +9,11 @@
 #include "sensor_msgs/LaserScan.h"
 #include <geometry_msgs/Pose2D.h>
 
-
 float Front = 0;
 float Back = 0;
 float Left = 0;
 float Right = 0;
-float up = 0;
+float Up = 0;
 int angle = 0;
 float min_distance = 0;
 float laser_x = 0;
