@@ -32,7 +32,7 @@ int next_data_handle(int addr , int count)
   a = addr;
   for(int i = 0; i < count ; i++)
   { 
-    a = ( a == MAXSIZE ?  0 : ( a + 1 ) ) ;   
+    a = ( (a + 1)  == MAXSIZE ?  0 : ( a + 1 ) ) ;   
   }
   return a;  
 }
@@ -102,8 +102,8 @@ int main(int argc, char **argv)
         for(int j = 0 ; j < 18 ; j++)
         {
           readbuf[j] = ringbuf[read_addr] ;
-          read_addr = next_data_handle(read_addr);
-          ROS_INFO("test_2:%X",readbuf[j]); 
+          read_addr = next_data_handle(read_addr) ;
+          ROS_INFO("test_2:%X",readbuf[j]) ; 
         }
         break;
       }else
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
     ROS_INFO("%d" , data[6]) ;
     ROS_INFO("%d" , data[7]) ;
     ROS_INFO("%d" , data[8]) ;
- /* if(crc(data,18) == crc_data)
+    if(crc(data,18) == crc_data)
     {
       sonar_raw.sonar_1 = data[0];
       sonar_raw.sonar_2 = data[1];
@@ -146,7 +146,7 @@ int main(int argc, char **argv)
       sonar_raw.sonar_7 = data[6];
       sonar_raw.sonar_8 = data[7];
       sonar_raw.sonar_9 = data[8];
-    }*/
+    }
     sonar_pub.publish(sonar_raw);
     ros:: spinOnce();
     loop_rate.sleep();
