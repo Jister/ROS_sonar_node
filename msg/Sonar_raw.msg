@@ -5,3 +5,5 @@ float64 sonar_4
 float64 sonar_5
 float64 sonar_6
 float64 sonar_7
+float64 sonar_8
+float64 sonar_9
