@@ -14,8 +14,8 @@
 sonar::Sonar_raw sonar_raw;
 
 /*ringbuffer*/  
-char ringbuf[MAXSIZE];
-char readbuf[18];
+unsigned char ringbuf[MAXSIZE];
+unsigned char readbuf[18];
 unsigned short  data[9];
 int read_addr = 0;  
 int write_addr = 0;  
@@ -37,7 +37,7 @@ int next_data_handle(int addr , int count)
   return a;  
 }
  
-void write_data(char data)  
+void write_data(unsigned char data)  
 {  
   *(ringbuf+write_addr) = data;  
   write_addr = next_data_handle(write_addr);  
