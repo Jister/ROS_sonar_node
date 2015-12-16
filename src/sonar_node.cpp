@@ -14,8 +14,8 @@
 sonar::Sonar_raw sonar_raw;
 
 /*ringbuffer*/  
-unsigned char ringbuf[MAXSIZE];
-unsigned char readbuf[18];
+short ringbuf[MAXSIZE];
+short readbuf[18];
 unsigned short  data[9];
 int read_addr = 0;  
 int write_addr = 0;  
@@ -37,7 +37,7 @@ int next_data_handle(int addr , int count)
   return a;  
 }
  
-void write_data(unsigned char data)  
+void write_data(short data)  
 {  
   *(ringbuf+write_addr) = data;  
   write_addr = next_data_handle(write_addr);  
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
   ros::Rate loop_rate(50);
 
   int fd ;
-  char ret ;
+  short ret ;
   if ((fd = serialOpen ( SERIAL_PORT, 57600)) < 0)
   {
     fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
