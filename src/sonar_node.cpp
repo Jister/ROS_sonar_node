@@ -96,7 +96,8 @@ int main(int argc, char **argv)
     for(int i = 0 ; i < MAXSIZE ; i++)
     {
       if((ringbuf[read_addr] == '>') && (ringbuf[next_data_handle(read_addr)] == '*') && (ringbuf[next_data_handle(read_addr,2)] == '>') 
-      && (ringbuf[next_data_handle(read_addr,3)] == 0x12) && (ringbuf[next_data_handle(read_addr,4)] == 0x00) && (ringbuf[next_data_handle(read_addr,5)] == 'c'))  
+      && (ringbuf[next_data_handle(read_addr,3)] == 0x12) && (ringbuf[next_data_handle(read_addr,4)] == 0x00) && (ringbuf[next_data_handle(read_addr,5)] == 'c')
+      && (ringbuf[next_data_handle(read_addr,26)] == '<') && (ringbuf[next_data_handle(read_addr,27)] == '#') && (ringbuf[next_data_handle(read_addr,28)] == '<'))  
       {
         read_addr = next_data_handle(read_addr,6) ; 
         for(int j = 0 ; j < 18 ; j++)
@@ -113,18 +114,16 @@ int main(int argc, char **argv)
     }
     crc_data =  ringbuf[read_addr] | (ringbuf[next_data_handle(read_addr)] << 8) ;
     ROS_INFO("test_3:%X",crc_data); 
-    if( (ringbuf[next_data_handle(read_addr,2)] == '<') && (ringbuf[next_data_handle(read_addr,3)] == '#') && (ringbuf[next_data_handle(read_addr,4)] == '<'))
-    {
-      data[0] = (readbuf[1]<<8) | readbuf[0] ;
-      data[1] = (readbuf[3]<<8) | readbuf[2] ; 
-      data[2] = (readbuf[5]<<8) | readbuf[4] ; 
-      data[3] = (readbuf[7]<<8) | readbuf[6] ; 
-      data[4] = (readbuf[9]<<8) | readbuf[8] ; 
-      data[5] = (readbuf[11]<<8) | readbuf[10] ; 
-      data[6] = (readbuf[13]<<8) | readbuf[12] ; 
-      data[7] = (readbuf[15]<<8) | readbuf[14] ; 
-      data[8] = (readbuf[17]<<8) | readbuf[16] ;
-    }
+    data[0] = (readbuf[1]<<8) | readbuf[0] ;
+    data[1] = (readbuf[3]<<8) | readbuf[2] ; 
+    data[2] = (readbuf[5]<<8) | readbuf[4] ; 
+    data[3] = (readbuf[7]<<8) | readbuf[6] ; 
+    data[4] = (readbuf[9]<<8) | readbuf[8] ; 
+    data[5] = (readbuf[11]<<8) | readbuf[10] ; 
+    data[6] = (readbuf[13]<<8) | readbuf[12] ; 
+    data[7] = (readbuf[15]<<8) | readbuf[14] ; 
+    data[8] = (readbuf[17]<<8) | readbuf[16] ;
+
     read_addr = next_data_handle(read_addr, 5) ;
     ROS_INFO("%d" , data[0]) ;
     ROS_INFO("%d" , data[1]) ;
