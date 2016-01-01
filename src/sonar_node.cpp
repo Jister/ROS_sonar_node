@@ -3,7 +3,7 @@
 #include <string.h>
 #include <wiringPi.h>
 #include "ros/ros.h"
-#include "sonar/Sonar.h"
+#include "sonar/Sonar_raw.h"
 
 int sonar1_start_time;
 int sonar1_stop_time;
@@ -24,10 +24,10 @@ int sonar6_start_time;
 int sonar6_stop_time;
 int sonar6_time;
 
-sonar::Sonar sonar_raw;      //当前声纳数据      
-sonar::Sonar sonar_prev;     //前一次声纳数据
-sonar::Sonar sonar_pprev;    //上上次的声纳数据
-sonar::Sonar sonar_filtered; //求平均后声纳数据
+sonar::Sonar_raw sonar_raw;      //当前声纳数据      
+sonar::Sonar_raw sonar_prev;     //前一次声纳数据
+sonar::Sonar_raw sonar_pprev;    //上上次的声纳数据
+sonar::Sonar_raw sonar_filtered; //求平均后声纳数据
 
 void Interrupt1()             //声纳1中断
 {
@@ -117,7 +117,7 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "sonar_node");
   ros::NodeHandle n;
-  ros::Publisher chatter_pub = n.advertise<sonar::Sonar>("sonar_data", 1000);
+  ros::Publisher chatter_pub = n.advertise<sonar::Sonar_raw>("sonar_data", 1000);
   ros::Rate loop_rate(25);
   float distance1 = 0;
   float distance2 = 0;   
@@ -244,7 +244,7 @@ int main(int argc, char **argv)
 
     sonar_filtered.sonar_1 = (int)(sonar_raw.sonar_1 + sonar_prev.sonar_1 + sonar_pprev.sonar_1)/3;    //求平均
     sonar_filtered.sonar_2 = (int)(sonar_raw.sonar_2 + sonar_prev.sonar_2 + sonar_pprev.sonar_2)/3;
-    sonar_filtered.sonar_3 = (int) (sonar_raw.sonar_3 + sonar_prev.sonar_3 + sonar_pprev.sonar_3)/3;
+    sonar_filtered.sonar_3 = (int)(sonar_raw.sonar_3 + sonar_prev.sonar_3 + sonar_pprev.sonar_3)/3;
     sonar_filtered.sonar_4 = (int)(sonar_raw.sonar_4 + sonar_prev.sonar_4 + sonar_pprev.sonar_4)/3;
     sonar_filtered.sonar_5 = (int)(sonar_raw.sonar_5 + sonar_prev.sonar_5 + sonar_pprev.sonar_5)/3;
     sonar_filtered.sonar_6 = (int)(sonar_raw.sonar_6 + sonar_prev.sonar_6 + sonar_pprev.sonar_6)/3;

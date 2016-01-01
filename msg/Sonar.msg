@@ -1,6 +1,7 @@
-float64 sonar_1
-float64 sonar_2
-float64 sonar_3
-float64 sonar_4
-float64 sonar_5
-float64 sonar_6
+float64 sonar_front
+float64 sonar_behind
+float64 sonar_left
+float64 sonar_right
+float64 sonar_up
+float64 sonar_down
+float64 sonar_cam
