@@ -6,7 +6,7 @@
 #include "ros/ros.h"
 #include "sonar/Sonar_raw.h"
 
-#define Sonar_filter 	100
+#define Sonar_filter 	200
 
 int sonar1_start_time;
 int sonar1_stop_time;
@@ -165,16 +165,16 @@ int main(int argc, char **argv)
   digitalWrite(23, LOW);
   digitalWrite(24, LOW);
   digitalWrite(25, LOW);
-  digitalWrite(26, LOW);
-  digitalWrite(27, LOW);
+//  digitalWrite(26, LOW);
+//  digitalWrite(27, LOW);
 
   wiringPiISR(0,INT_EDGE_BOTH,&Interrupt1);    //设置中断，为上升沿下降沿都触发
   wiringPiISR(1,INT_EDGE_BOTH,&Interrupt2);
   wiringPiISR(2,INT_EDGE_BOTH,&Interrupt3);
   wiringPiISR(3,INT_EDGE_BOTH,&Interrupt4);
   wiringPiISR(4,INT_EDGE_BOTH,&Interrupt5);
-  wiringPiISR(5,INT_EDGE_BOTH,&Interrupt6);
-  wiringPiISR(6,INT_EDGE_BOTH,&Interrupt7);
+//  wiringPiISR(5,INT_EDGE_BOTH,&Interrupt6);
+//  wiringPiISR(6,INT_EDGE_BOTH,&Interrupt7);
 
   while (ros::ok())
   {
