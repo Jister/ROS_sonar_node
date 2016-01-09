@@ -24,8 +24,19 @@ unsigned short crc_data= 0;
 int next_data_handle(int addr)     
 {     
   return (addr + 1) == MAXSIZE ?  0 : (addr + 1) ;     
-}     
-
+}
+     
+int next_data_handle(int addr , int count)     
+{     
+  int a;
+  a = addr;
+  for(int i = 0; i < count ; i++)
+  { 
+    a = ( a == MAXSIZE ?  0 : ( a + 1 ) ) ;   
+  }
+  return a;  
+}
+ 
 void write_data(char data)  
 {  
   *(ringbuf+write_addr) = data;  
@@ -57,10 +68,10 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "sonar_node");
   ros::NodeHandle n;
   ros::Publisher sonar_pub = n.advertise<sonar::Sonar_raw>("sonar_data", 1000);
-  ros::Rate loop_rate(25);
+  ros::Rate loop_rate(50);
 
   int fd ;
-/*open the serial*/
+  char ret ;
   if ((fd = serialOpen ( SERIAL_PORT, 57600)) < 0)
   {
     fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
@@ -71,33 +82,38 @@ int main(int argc, char **argv)
   {
     for(int i = 0 ; i < 29 ; i++)
     {
-      if( fd = serialGetchar(fd) < 0 )
+      ret = serialGetchar(fd) ;
+      if( ret < 0 )
       {
         fprintf (stderr, "No data : %s\n", strerror (errno)) ;
         return 1;
       }else
       {
-        ROS_INFO("%X",serialGetchar(fd));
-        //write_data(serialGetchar(fd)) ;
+        write_data(ret) ;
+        ROS_INFO("test_1:%X",ret); 
       }
     }
     for(int i = 0 ; i < MAXSIZE ; i++)
     {
-      if((ringbuf[read_addr] == '>') && (ringbuf[next_data_handle(read_addr)] == '*') && (ringbuf[next_data_handle(read_addr)] == '>') 
-      && (ringbuf[next_data_handle(read_addr)] == 0x12) && (ringbuf[next_data_handle(read_addr)] == 0x00) && (ringbuf[next_data_handle(read_addr)] == 'c'))  
+      if((ringbuf[read_addr] == '>') && (ringbuf[next_data_handle(read_addr)] == '*') && (ringbuf[next_data_handle(read_addr,2)] == '>') 
+      && (ringbuf[next_data_handle(read_addr,3)] == 0x12) && (ringbuf[next_data_handle(read_addr,4)] == 0x00) && (ringbuf[next_data_handle(read_addr,5)] == 'c'))  
       {
+        read_addr = next_data_handle(read_addr,6) ; 
         for(int j = 0 ; j < 18 ; j++)
         {
-          readbuf[j] = ringbuf[next_data_handle(read_addr)] ; 
+          readbuf[j] = ringbuf[read_addr] ;
+          read_addr = next_data_handle(read_addr);
+          ROS_INFO("test_2:%X",readbuf[j]); 
         }
         break;
       }else
       {
-        next_data_handle(read_addr);
+        read_addr = next_data_handle(read_addr) ;
       }
     }
-    crc_data =  ringbuf[next_data_handle(read_addr)];
-    if( (ringbuf[next_data_handle(read_addr)] == '<') && (ringbuf[next_data_handle(read_addr)] == '#') && (ringbuf[next_data_handle(read_addr)] == '<'))
+    crc_data =  ringbuf[read_addr] | (ringbuf[next_data_handle(read_addr)] << 8) ;
+    ROS_INFO("test_3:%X",crc_data); 
+    if( (ringbuf[next_data_handle(read_addr,2)] == '<') && (ringbuf[next_data_handle(read_addr,3)] == '#') && (ringbuf[next_data_handle(read_addr,4)] == '<'))
     {
       data[0] = (readbuf[1]<<8) | readbuf[0] ;
       data[1] = (readbuf[3]<<8) | readbuf[2] ; 
@@ -109,7 +125,17 @@ int main(int argc, char **argv)
       data[7] = (readbuf[15]<<8) | readbuf[14] ; 
       data[8] = (readbuf[17]<<8) | readbuf[16] ;
     }
-    if(crc(data,18) == crc_data)
+    read_addr = next_data_handle(read_addr, 5) ;
+    ROS_INFO("%d" , data[0]) ;
+    ROS_INFO("%d" , data[1]) ;
+    ROS_INFO("%d" , data[2]) ;
+    ROS_INFO("%d" , data[3]) ;
+    ROS_INFO("%d" , data[4]) ;
+    ROS_INFO("%d" , data[5]) ;
+    ROS_INFO("%d" , data[6]) ;
+    ROS_INFO("%d" , data[7]) ;
+    ROS_INFO("%d" , data[8]) ;
+ /* if(crc(data,18) == crc_data)
     {
       sonar_raw.sonar_1 = data[0];
       sonar_raw.sonar_2 = data[1];
@@ -120,16 +146,7 @@ int main(int argc, char **argv)
       sonar_raw.sonar_7 = data[6];
       sonar_raw.sonar_8 = data[7];
       sonar_raw.sonar_9 = data[8];
-    }
-    ROS_INFO("%d" , data[0]) ;
-    ROS_INFO("%d" , data[1]) ;
-    ROS_INFO("%d" , data[2]) ;
-    ROS_INFO("%d" , data[3]) ;
-    ROS_INFO("%d" , data[4]) ;
-    ROS_INFO("%d" , data[5]) ;
-    ROS_INFO("%d" , data[6]) ;
-    ROS_INFO("%d" , data[7]) ;
-    ROS_INFO("%d" , data[8]) ;
+    }*/
     sonar_pub.publish(sonar_raw);
     ros:: spinOnce();
     loop_rate.sleep();
