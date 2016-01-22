@@ -12,7 +12,6 @@
 #define MAXSIZE 60
 
 sonar::Sonar_raw sonar_raw;
-
 /*ringbuffer*/  
 short ringbuf[MAXSIZE];
 short readbuf[18];
@@ -72,7 +71,7 @@ int main(int argc, char **argv)
 
   int fd ;
   short ret ;
-  if ((fd = serialOpen ( SERIAL_PORT, 57600)) < 0)
+  if ((fd = serialOpen ( SERIAL_PORT, 115200)) < 0)
   {
     fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
     return 1 ;
@@ -90,7 +89,7 @@ int main(int argc, char **argv)
       }else
       {
         write_data(ret) ;
-        ROS_INFO("test_1:%X",ret); 
+//        ROS_INFO("test_1:%X",ret); 
       }
     }
     for(int i = 0 ; i < MAXSIZE ; i++)
@@ -104,7 +103,7 @@ int main(int argc, char **argv)
         {
           readbuf[j] = ringbuf[read_addr] ;
           read_addr = next_data_handle(read_addr) ;
-          ROS_INFO("test_2:%X",readbuf[j]) ; 
+//          ROS_INFO("test_2:%X",readbuf[j]) ; 
         }
         break;
       }else
@@ -125,16 +124,25 @@ int main(int argc, char **argv)
     data[8] = (readbuf[17]<<8) | readbuf[16] ;
 
     read_addr = next_data_handle(read_addr, 5) ;
-    ROS_INFO("%d" , data[0]) ;
-    ROS_INFO("%d" , data[1]) ;
-    ROS_INFO("%d" , data[2]) ;
-    ROS_INFO("%d" , data[3]) ;
-    ROS_INFO("%d" , data[4]) ;
-    ROS_INFO("%d" , data[5]) ;
-    ROS_INFO("%d" , data[6]) ;
-    ROS_INFO("%d" , data[7]) ;
-    ROS_INFO("%d" , data[8]) ;
-    if(crc(data,18) == crc_data)
+//    ROS_INFO("%d" , data[0]) ;
+ //   ROS_INFO("%d" , data[1]) ;
+//    ROS_INFO("%d" , data[2]) ;
+//    ROS_INFO("%d" , data[3]) ;
+//    ROS_INFO("%d" , data[4]) ;
+//    ROS_INFO("%d" , data[5]) ;
+//    ROS_INFO("%d" , data[6]) ;
+//    ROS_INFO("%d" , data[7]) ;
+//    ROS_INFO("%d" , data[8]) ;
+    sonar_raw.sonar_1 = 0;
+    sonar_raw.sonar_2 = 0;
+    sonar_raw.sonar_3 = 0;
+    sonar_raw.sonar_4 = 0;
+    sonar_raw.sonar_5 = 0;
+    sonar_raw.sonar_6 = 0;
+    sonar_raw.sonar_7 = 0;
+    sonar_raw.sonar_8 = 0;
+    sonar_raw.sonar_9 = 0;
+   if(crc(data,18) == crc_data)
     {
       sonar_raw.sonar_1 = data[0];
       sonar_raw.sonar_2 = data[1];
